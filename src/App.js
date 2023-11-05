@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Header from './sections/Header/Header';
+import './index.css';
+import Home from './pages/Home';
+import Footer from './sections/Footer/Footer';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import { ToastContainer } from 'react-toastify';
+import Profile from './pages/Profile';
+
+export const AuthContext = React.createContext(null);
 
 function App() {
+  const [loginUser, setLoginUser] = useState(JSON.parse(localStorage.getItem('user')));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContext.Provider value={{loginUser, setLoginUser}}>
+      <BrowserRouter>
+        <ToastContainer />
+        <div className='container mx-auto px-4'>
+          <Header />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/profile' element={<Profile />} />
+          </Routes>
+        </div>
+        <Footer />
+      </BrowserRouter>
+    </AuthContext.Provider>
   );
 }
 
